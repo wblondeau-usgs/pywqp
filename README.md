@@ -81,7 +81,7 @@ result = client_instance.request_wqp_data(verb, host_url, resource_label, params
 ##### Troublesooting help: getting an equivalent REST query URL
 When working with a module like pywqp, it's often very helpful to be able to produce a query that duplicates the one being issued by the module.  The duplicate query can be run independently though a utility such as curl (or a browser, as long as the browser handles outbound query parameter urlencoding correctly.)
 
-pywqp provides this via `create_rest_url`, a function that takes the same `host_url`, `resource_label`, `params`, and `mime_type` arguments that are made to a call to `request_wqp_data`. Instead of making a call to WQP and returning a `requests.response` object, `create_rest_url` returns a paste-ready URL that can be set from a different client.
+pywqp provides this via `create_rest_url`, a function that takes the same `host_url`, `resource_label`, `params`, and `mime_type` arguments that are made to a call to `request_wqp_data`. Instead of making a call to WQP and returning a `python-requests.response` object, `create_rest_url` returns a paste-ready URL that can be sent from a different client.
 
 <pre>
 <tt>host_url = 'http://waterqualitydata.us'
@@ -100,7 +100,7 @@ will print
 <br/>
 ##### When pywqp gets the HTTP Response from WQP
 
-`request_wqp_data` returns a [`requests.response` object](http://docs.python-requests.org/en/latest/api/#requests.Response). `pywqp_client` lets you do two things with that `response`:
+`request_wqp_data` returns a [`python-requests.response` object](http://docs.python-requests.org/en/latest/api/#requests.Response). `pywqp_client` lets you do two things with that `response`:
 
  - Convert the dataset to an in-memory pandas dataframe.
 
@@ -157,7 +157,7 @@ Content-Type: text/csv
 
 <br/>
 #### No direct HDF5 support
-Note that stashing HTTP Response data to disk is a simple convenience to incorporate. On the other hand, pywqp does **not** support saving pandas dataframes to disk. If you're sufficiently advanced to do that, you probably already know how to use HDF5; if not, there are plenty of resources out there (e.g. [Python and HDF5](http://shop.oreilly.com/product/0636920030249.do)
+Note that stashing HTTP Response data to disk is a simple convenience to incorporate. On the other hand, pywqp does **not** support saving pandas dataframes to disk. If you're sufficiently advanced to do that, you probably already know how to use HDF5; if not, there are plenty of resources out there (e.g. [Python and HDF5](http://shop.oreilly.com/product/0636920030249.do).)
 
 
 <br/>
@@ -201,6 +201,7 @@ mapper_instance = wqx_mappings.WQXMapper()</tt>
 <br/>
 ##### Determining (if possible) the type of the table to be constructed from an HTTP response.
 
+A "table type" is a descriptor for a mapping between an expected XML format and a tabular representation. The tabular representation is a dictionary whose keys are XPath-like expressions, and whose values are column headings (that also act, informally, as semantic signifiers.) The <tt>determine_table_type(response)</tt> function returns a string value that is used as the key in `mapper_instance.tabular_defs`.
 <pre>
 <tt>table_type = mapper_instance.determine_table_type(response)</tt>
 </pre>
